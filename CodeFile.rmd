@@ -1,0 +1,161 @@
+---
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+<br>
+
+# **Code Walkthrough**
+<br>
+
+### The following page is the step-by-step explanation of the code written in R to create the various charts. 
+
+<br>
+
+#### 1. Load libraries
+```{r message=FALSE, warning=FALSE}
+
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
+<br>
+
+#### 2. Load CSV files and check dataframe structures
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+list.files(pattern = ".csv")
+ward_data <- read.csv("2014_BBMP_Ward_Details.csv")
+bus_stops <- read.csv("2012_Bus_Stops.csv")
+roads_data <- read.csv("2016_Ward_Roads.csv")
+
+str(ward_data)
+str(bus_stops)
+str(roads_data)
+```
+<br>
+
+#### 3. Subset dataframes to separate only required columns
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+wards <- subset(ward_data, select=c(Ward.No., Ward.Name, Ward.Area..in.sq.km., Total.Population))
+colnames(wards) <- c("wardNumber", "wardName", "wardArea", "wardPop")
+
+stops <- subset(bus_stops, select = c(Busstop_Name, Ward_Number))
+colnames(stops) <- c("busStops", "wardNos")
+
+roads <- subset(roads_data, select=c(Ward_No, Road.length..kms.))
+colnames(roads) <-c("wardNumber", "roadLength")
+```
+<br>
+
+#### 4. Merge dataframes together to create complete dataframe and clean up final dataframe by removing NA values
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+roads$wardNumber <- as.numeric(roads$wardNumber)
+
+first_join <- full_join(wards, stops, by=c("wardNumber"="wardNos"))
+main_join <- full_join(first_join, roads, by=c("wardNumber"="wardNumber"))
+
+numStops <- main_join %>% count(wardName)
+
+df <- full_join(main_join, numStops, by = "wardName") 
+
+newdf <- subset(df, select=c(wardNumber, wardName, wardArea, wardPop, roadLength,n))
+newdf <- na.omit(newdf)
+newdf$roadLength <- as.numeric(newdf$roadLength)
+
+str(newdf)
+```
+<br>
+
+#### 5. Add columns of population density, normalised population, normalised area, and confirm that all rows are unique
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+finaldf <- newdf %>%  mutate(popDensity = newdf$wardPop/newdf$wardArea) %>% 
+  mutate(normPop=(newdf$wardPop-35122)/14213) %>% 
+  mutate(normArea=(newdf$wardArea-0.3564)/25.8022)
+
+finaldf <- unique(finaldf)
+
+```
+<br>
+
+#### 6. Plot Graphs
+```{r cars, echo=TRUE, message=FALSE, warning=FALSE}
+## Scatter plot of Ward Area vs. Ward Population
+
+g <- ggplot(data = finaldf, 
+            aes(x = wardArea, y = wardPop))
+g + geom_point(colour="darkblue", alpha=0.6, size=2) +
+  labs(title = "Ward Area vs. Ward Population\n", x = "\nWard Area", y = "Ward Population\n") + 
+  theme(plot.margin = margin(15,15,15,15))
+
+```
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+## Scatter plot of Ward Area vs. Population Density
+
+finaldf$n <- as.numeric(finaldf$n)
+h <- ggplot(data = finaldf, 
+            aes(x = wardArea, y = popDensity, colour=n))
+h + geom_point(size=2, alpha=0.8) + scale_color_gradient(low = "darkblue", high = "orange") + 
+  labs(title = "Ward Area vs. Population Density\n", x = "\nWard Area", y = "Population Density\n", colour = "Number of Bus Stops\n(per ward)\n") + 
+  theme(plot.margin = margin(15,15,15,15),legend.text = element_text(size = 10), legend.title = element_text(size = 10))
+
+```
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+### Closer view of subset (<75000 people/sq.km., <10 sq.km.)
+
+j <- ggplot(data = finaldf, 
+            aes(x = wardArea, y = popDensity, colour=n))
+j + geom_point(size=3, alpha=0.5) + scale_color_gradient(low = "darkblue", high = "orange") + 
+  xlim(0,10) + ylim(0, 75000) + 
+  labs(title = "Ward Area vs. Population Density\n", x = "\nWard Area", y = "Population Density\n", colour = "Number of Bus Stops\n(per ward)\n")+ 
+  theme(plot.margin = margin(15,15,15,15), legend.text = element_text(size = 10), legend.title = element_text(size = 10))
+
+```
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+## Scatter plot of Population Density vs. Number of Bus Stops (Per ward)
+
+k <- ggplot(data = finaldf, 
+            aes(x = popDensity, y = n, color=normArea))
+k + geom_point(alpha=1, size=5) + scale_color_gradient(low = "darkblue", high = "orange") +
+  geom_point(colour= "black", fill="white", shape=1, size=5, alpha=finaldf$normArea) +
+  labs(title = "Population Density vs. Number of Bus Stops (Per ward)\n", x = "\nPopulation Density", y = "Number of Bus Stops\n", colour = "Normalised Ward Area\n")+ 
+  theme(plot.margin = margin(15,15,15,15), legend.text = element_text(size = 9), legend.title = element_text(size = 10))
+```
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+### Closer view of subset (<45000 people/sq.km., <13 bus stops)
+
+m <- ggplot(data = finaldf, 
+            aes(x = popDensity, y = n, color=normArea))
+m + geom_point(alpha=1, size=5) + scale_color_gradient(low = "darkblue", high = "orange") +
+  geom_point(colour= "black", fill="white", shape=1, size=5, alpha=finaldf$normArea) + xlim(0,45000) + ylim(0, 13) + 
+  labs(title = "Population Density vs. Number of Bus Stops (Per ward)\n", x = "\nPopulation Density", y = "Number of Bus Stops\n", colour = "Normalised Ward Area\n")+ 
+  theme(plot.margin = margin(15,15,15,15), legend.text = element_text(size = 9), legend.title = element_text(size = 10))
+```
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+## Scatter plot of Road Lengths vs. Number of Bus Stops (Per ward)
+
+s <- ggplot(data = finaldf, 
+            aes(x = roadLength, y = n, color=normArea))
+s + geom_point(size=4, alpha=0.8) + scale_color_gradient(low = "darkblue", high = "orange")+
+  labs(title = "Road Lengths vs. Number of Bus Stops (Per ward)\n", x = "\nRoad Lengths", y = "Number of Bus Stops\n", colour = "Normalised Ward Area\n")+ 
+  theme(plot.margin = margin(15,15,15,15), legend.text = element_text(size = 9), legend.title = element_text(size = 10))
+```
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+### Closer view of subset (<100 km., <12 bus stops)
+
+t <- ggplot(data = finaldf, 
+            aes(x = roadLength, y = n, color=normArea))
+t + geom_point(size=4, alpha=0.8) + scale_color_gradient(low = "darkblue", high = "orange") + xlim(0,100) + ylim(0,12) +
+  labs(title = "Road Lengths vs. Number of Bus Stops (Per ward)\n", x = "\nRoad Lengths", y = "Number of Bus Stops\n", colour = "Normalised Ward Area\n")+ 
+  theme(plot.margin = margin(15,15,15,15), legend.text = element_text(size = 9), legend.title = element_text(size = 10))
+
+```
+

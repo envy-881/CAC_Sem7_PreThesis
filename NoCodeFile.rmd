@@ -1,0 +1,216 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+<br>
+
+# **Bangalore's Population and Bus Stop Distribution**
+<br>
+
+## **Introduction**
+
+Bangalore has seen unprecedented growth in the past few decades. Given the unplanned nature of the city's growth, due to various factors such as the IT sector and educational institutions, it's no surprise that there infrastructural growth of the city has also been affected. Increase in population is another reason for the expansion of the city's boundaries and in the need for affordable public transportation.
+
+Data is a wonderful resource that can give us insights into the trends in change and growth, often leading to various insights about cause-and-effect variables and possible interventions. Shown below are various graphs that are plotted using different variables in an attempt to understand the city.
+
+* * * 
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
+# Load Files
+
+list.files(pattern = ".csv")
+ward_data <- read.csv("2014_BBMP_Ward_Details.csv")
+bus_stops <- read.csv("2012_Bus_Stops.csv")
+roads_data <- read.csv("2016_Ward_Roads.csv")
+
+colnames(ward_data)
+colnames(bus_stops)
+colnames(roads_data)
+
+
+
+# Subset Data
+
+wards <- subset(ward_data, select=c(Ward.No., Ward.Name, Ward.Area..in.sq.km., Total.Population))
+colnames(wards) <- c("wardNumber", "wardName", "wardArea", "wardPop")
+
+stops <- subset(bus_stops, select = c(Busstop_Name, Ward_Number))
+colnames(stops) <- c("busStops", "wardNos")
+
+roads <- subset(roads_data, select=c(Ward_No, Road.length..kms.))
+colnames(roads) <-c("wardNumber", "roadLength")
+
+
+
+# Merge dataframes together
+
+roads$wardNumber <- as.numeric(roads$wardNumber)
+
+first_join <- full_join(wards, stops, by=c("wardNumber"="wardNos"))
+main_join <- full_join(first_join, roads, by=c("wardNumber"="wardNumber"))
+
+
+numStops <- main_join %>% count(wardName)
+
+df <- full_join(main_join, numStops, by = "wardName") 
+
+newdf <- subset(df, select=c(wardNumber, wardName, wardArea, wardPop, roadLength,n))
+newdf <- na.omit(newdf)
+newdf$roadLength <- as.numeric(newdf$roadLength)
+
+str(newdf)
+
+# Add columns of population density, normalised population, normalised area
+
+finaldf <- newdf %>%  mutate(popDensity = newdf$wardPop/newdf$wardArea) %>% 
+  mutate(normPop=(newdf$wardPop-35122)/14213) %>% 
+  mutate(normArea=(newdf$wardArea-0.3564)/25.8022)
+
+finaldf <- unique(finaldf)
+
+
+```
+
+### **Scatter plot of Ward Area vs. Ward Population**
+
+This graph illustrates the relationship between ward area and ward population. The points are the various wards of Bangalore, and when each point is verified, it becomes clear that wards in the center of the city are the ones that most populated despite being less that 5 sq.km in area. As we move towards the periphery of the city, the ward areas become larger and the population per ward reduces. 
+
+This could be due to multiple reasons, and further data would be required to verify the same, but one major reason for the decrease in population as we move away from the city center could be the lack of resources such as grocery stores, transportation, offices, educational institutions, etc. 
+
+<br>
+```{r graph1, echo=FALSE, message=FALSE, warning=FALSE, fig.align = 'center'}
+g <- ggplot(data = finaldf, 
+            aes(x = wardArea, y = wardPop))
+g + geom_point(colour="darkblue", alpha=0.6, size=2) +
+  labs(title = "Ward Area vs. Ward Population\n", x = "\nWard Area (in sq.km)", y = "Ward Population\n") + 
+  theme(plot.margin = margin(15,15,15,15), plot.background = element_rect(colour = "darkblue", fill=NA, size=2))
+
+```
+<br><br>
+
+* * * 
+
+
+### **Scatter plot of Ward Area vs. Population Density**
+
+When we plot the ward area against the population density per ward (i.e the number of people per sq.km of area), we get the following graph. In accordance with the previous graph, we are able to see more clearly that as ward area increases, population decreases, and vice-versa. The colour of the points in this graph are indicative of the number of bus stops in that ward.
+
+Most wards have between 1-10 bus stops, while a few have more than 15 stops. There is no apparent pattern in the distribution of bus stops in relation to the ward area or population density, but a better understanding may emerge is this data is cross-referenced with subsets of population density such as rural density, urban density, and agricultural density. 
+
+<br>
+```{r graph2, echo=FALSE, message=FALSE, warning=FALSE, fig.align = 'center'}
+
+finaldf$n <- as.numeric(finaldf$n)
+h <- ggplot(data = finaldf, 
+            aes(x = wardArea, y = popDensity, colour=n))
+h + geom_point(size=2, alpha=0.8) + scale_color_gradient(low = "darkblue", high = "orange") + 
+  labs(title = "Ward Area vs. Population Density\n", x = "\nWard Area (in sq.km)", y = "Population Density (per sq.km)\n", colour = "Number of Bus Stops\n(per ward)\n") + 
+  theme(plot.margin = margin(15,15,15,15),legend.text = element_text(size = 10), legend.title = element_text(size = 10), plot.background = element_rect(colour = "darkblue", fill=NA, size=2))
+
+```
+<br>
+
+##### **Closer view of subset (<75000 people/sq.km., <10 sq.km.)**
+
+<br>
+```{r graph3, echo=FALSE, message=FALSE, warning=FALSE, fig.align = 'center'}
+j <- ggplot(data = finaldf, 
+            aes(x = wardArea, y = popDensity, colour=n))
+j + geom_point(size=3, alpha=0.5) + scale_color_gradient(low = "darkblue", high = "orange") + 
+  xlim(0,10) + ylim(0, 75000) + 
+  labs(title = "Ward Area vs. Population Density\n", x = "\nWard Area (in sq.km)", y = "Population Density (per sq.km)\n", colour = "Number of Bus Stops\n(per ward)\n")+ 
+  theme(plot.margin = margin(15,15,15,15), legend.text = element_text(size = 10), legend.title = element_text(size = 10), plot.background = element_rect(colour = "darkblue", fill=NA, size=2))
+
+```
+<br><br>
+
+* * * 
+
+### **Scatter plot of Population Density vs. Number of Bus Stops (Per ward)**
+
+Graphing the population density of a ward against the number of bus stops in that wards gives us an interesting figure. Most wards have 6 or less bus stops, and the wards that have more than 12 bus stops have a population density of 15,000-75,000 people per sq.km.
+
+The colour of the points are representative of their ward area when normalised (i.e. when scaled propotionally between 0 and 1). The points that are orange are wards with large area, while the points that are blue are smaller in area. Hence, we can see that wards that have lesser area and more population have fewer bus stops since the commute distance to the bus stops will also be shorter.
+
+<br>
+```{r graph4, echo=FALSE, message=FALSE, warning=FALSE, fig.align = 'center'}
+k <- ggplot(data = finaldf, 
+            aes(x = popDensity, y = n, color=normArea))
+k + geom_point(alpha=1, size=5) + scale_color_gradient(low = "darkblue", high = "orange") +
+  geom_point(colour= "black", fill="white", shape=1, size=5, alpha=finaldf$normArea) +
+  labs(title = "Population Density vs. Number of Bus Stops (Per ward)\n", x = "\nPopulation Density (per sq.km)", y = "Number of Bus Stops\n", colour = "Normalised Ward Area\n")+ 
+  theme(plot.margin = margin(15,15,15,15), legend.text = element_text(size = 9), legend.title = element_text(size = 10), plot.background = element_rect(colour = "darkblue", fill=NA, size=2))
+```
+<br>
+
+##### **Closer view of subset (<45000 people/sq.km., <13 bus stops)**
+
+<br>
+```{r graph5, echo=FALSE, fig.align='center', message=FALSE, warning=FALSE}
+m <- ggplot(data = finaldf, 
+            aes(x = popDensity, y = n, color=normArea))
+m + geom_point(alpha=1, size=5) + scale_color_gradient(low = "darkblue", high = "orange") +
+  geom_point(colour= "black", fill="white", shape=1, size=5, alpha=finaldf$normArea) + xlim(0,45000) + ylim(0, 13) + 
+  labs(title = "Population Density vs. Number of Bus Stops (Per ward)\n", x = "\nPopulation Density (per sq.km)", y = "Number of Bus Stops\n", colour = "Normalised Ward Area\n")+ 
+  theme(plot.margin = margin(15,15,15,15), legend.text = element_text(size = 9), legend.title = element_text(size = 10), plot.background = element_rect(colour = "darkblue", fill=NA, size=2))
+```
+<br><br>
+
+* * * 
+
+### **Scatter plot of Road Lengths vs. Number of Bus Stops (Per ward)**
+
+This graph visualizes the relationship between the road lengths and number of bus stops in the wards. Again, the number of bus stops predominantly less than 7 in wardss where the road length is less than 100. As the road lengths per ward increase, the number of bus stops also increase erratically, possibly for connectivity purposes. The path of the road and amount of residential infrastructure could also be factors in play. 
+
+The colour of the points are representative of their ward area when normalised (i.e. when scaled propotionally between 0 and 1). The points that are orange are wards with large area, while the points that are blue are smaller in area. 
+
+<br>
+```{r graph6, echo=FALSE, fig.align='center', message=FALSE, warning=FALSE}
+
+s <- ggplot(data = finaldf, 
+            aes(x = roadLength, y = n, color=normArea))
+s + geom_point(size=4, alpha=0.8) + scale_color_gradient(low = "darkblue", high = "orange")+
+  labs(title = "Road Lengths vs. Number of Bus Stops (Per ward)\n", x = "\nRoad Lengths (in km)", y = "Number of Bus Stops\n", colour = "Normalised Ward Area\n")+ 
+  theme(plot.margin = margin(15,15,15,15), legend.text = element_text(size = 9), legend.title = element_text(size = 10), plot.background = element_rect(colour = "darkblue", fill=NA, size=2))
+```
+<br>
+
+##### **Closer view of subset (<100 km., <12 bus stops)**
+
+<br>
+```{r graph7, echo=FALSE, fig.align='center', message=FALSE, warning=FALSE}
+
+t <- ggplot(data = finaldf, 
+            aes(x = roadLength, y = n, color=normArea))
+t + geom_point(size=4, alpha=0.8) + scale_color_gradient(low = "darkblue", high = "orange") + xlim(0,100) + ylim(0,12) +
+  labs(title = "Road Lengths vs. Number of Bus Stops (Per ward)\n", x = "\nRoad Lengths (in km)", y = "Number of Bus Stops\n", colour = "Normalised Ward Area\n")+ 
+  theme(plot.margin = margin(15,15,15,15), legend.text = element_text(size = 9), legend.title = element_text(size = 10), plot.background = element_rect(colour = "darkblue", fill=NA, size=2))
+
+```
+<br><br>
+
+* * * 
+
+## **Conclusion**
+
+From the above graphs and the data used in these visualisations, it is clear that there is a certain amount of randomness when it comes to Bangalore's distribution of area and population. While this may be attributed to the unpredictable and unplanned growth and development of Bangalore, we can definitively say that with further rigorous data collection, it is possible to have an ideal distribution of citizens, infrastructure, transportation and land-use.
+<br>
+
+<br>
+As always, having more data points and related data sets (such as traffic, residential area, agricultural land, etc.) would allow for richer graphs and possibly more insights. The data used in this project is as follows:
+
++ 2012 data of BMTC bus stops
++ 2014 data of BBMP ward details 
++ 2016 data of ward roads (updated in 2022)
+
+* * * 

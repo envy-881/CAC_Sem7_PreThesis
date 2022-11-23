@@ -1,0 +1,200 @@
+﻿_id,Ward_No,Ward Name,Area (sq km),Road length (kms)
+1,1,Kempegowda Ward,10.9,86
+2,2,Chowdeswari Ward,6.5,72
+3,3,Atturu,8.8,169
+4,4,Yelahanka Satellite Town,4.6,86
+5,5,Jakkuru,23.5,349
+6,6,Thanisandra,10,235
+7,7,Byatarayanapura,10,144
+8,8,Kodigehalli,3.8,84
+9,9,Vidyaranyapura,9.9,130
+10,10,Dodda Bommasandra,4.2,51
+11,11,Kuvempu Nagar,7.1,95
+12,12,Shettihalli,8.1,144
+13,13,Mallasandra,1.3,40
+14,14,Bagalakunte,4.3,123
+15,15,T Dasarahalli,0.9,29
+16,16,Jalahalli,5.2,36
+17,17,J P Park,2,52
+18,18,Radhakrishna Temple Ward,1.9,54
+19,19,Sanjaya Nagar,1.5,44
+20,20,Ganga Nagar,2.3,31
+21,21,Hebbala,1.2,36
+22,22,Vishwanath Nagenahalli,1.5,51
+23,23,Nagavara,2.1,65
+24,24,HBR Layout,4.6,119
+25,25,Horamavu,17.5,341
+26,26,Ramamurthy Nagar,7.3,144
+27,27,Banasavadi,3.4,101
+28,28,Kammanahalli,1,43
+29,29,Kacharkanahalli,1.7,55
+30,30,Kadugondanahalli,0.7,32
+31,31,Kushal Nagar,0.6,28
+32,32,Kaval Bairasandra,1.6,50
+33,33,Manorayana Palya,0.8,33
+34,34,Gangenahalli,1.1,20
+35,35,Aramane Nagara,7.5,57
+36,36,Mattikere,0.9,32
+37,37,Yeshwanthpura,0.8,25
+38,38,HMT Ward,5.2,74
+39,39,Chokkasandra,3.8,75
+40,40,Dodda Bidarakallu,12.9,282
+41,41,Peenya Industrial Area,5.5,90
+42,42,Lakshmi Devi Nagar,1.5,36
+43,43,Nandini Layout,1.4,49
+44,44,Marappana Palya,2,52
+45,45,Malleshwaram,1.8,34
+46,46,Jayachamarajendra Nagar,0.9,29
+47,47,Devara Jeevanahalli,1.4,28
+48,48,Muneshwara Nagar,0.5,21
+49,49,Lingarajapura,0.9,36
+50,50,Benniganahalli,4.9,64
+51,51,Vijnanapura,2.1,55
+52,52,KR Puram,4.8,83
+53,53,Basavanapura,6.3,126
+54,54,Hudi,15,197
+55,55,Devasandra,3.5,45
+56,56,A Narayanapura,2.1,52
+57,57,C.V. Raman Nagar,3.6,67
+58,58,New Tippa Sandra,3.4,68
+59,59,Maruthi Seva Nagar,2.4,45
+60,60,Sagayara Puram,0.8,26
+61,61,SK Garden,1.3,26
+62,62,Ramaswamy Palya,0.8,24
+63,63,Jaya Mahal,1.4,34
+64,64,Raj Mahal Guttahalli,0.7,24
+65,65,Kadu Malleshwar Ward,1.4,32
+66,66,Subramanya Nagar,0.9,28
+67,67,Nagapura,1.8,47
+68,68,Mahalakshmipuram,0.9,33
+69,69,Laggere,1.6,55
+70,70,Rajagopal Nagar,2.2,67
+71,71,Hegganahalli,1.8,56
+72,72,Herohalli,7.8,184
+73,73,Kottegepalya,5.8,139
+74,74,Shakthi Ganapathi Nagar,0.7,28
+75,75,Shankar Matt,1.1,40
+76,76,Gayithri Nagar,0.6,28
+77,77,Dattatreya Temple Ward,0.7,25
+78,78,Pulakeshi Nagar,1.7,41
+79,79,Sarvagna Nagar,3.6,52
+80,80,Hoysala Nagar,2.1,51
+81,81,Vijnana Nagar,5.7,106
+82,82,Garudachar palya,6.8,70
+83,83,Kadugodi,11.2,101
+84,84,Hagadur,12.6,154
+85,85,Dodda Nekkundi,12,155
+86,86,Marathahalli,3.1,53
+87,87,HAL Airport,6.8,41
+88,88,Jeevanbhima Nagar,1.9,47
+89,89,Jogupalya,0.9,30
+90,90,Halsoor,1.7,34
+91,91,Bharathi Nagar,0.8,30
+92,92,Shivaji Nagar,0.4,22
+93,93,Vasanth Nagar,3.1,47
+94,94,Gandhi Nagar,1.9,38
+95,95,Subhash Nagar,1.3,27
+96,96,Okalipuram,0.8,21
+97,97,Dayananda Nagar,0.4,20
+98,98,Prakash Nagar,0.6,20
+99,99,Rajaji Nagar,0.9,27
+100,100,Basaveshwara Nagar,0.8,26
+101,101,Kamakshipalya,0.9,28
+102,102,Vrisahbhavathi Nagar,1,40
+103,103,Kaveripura,1.7,48
+104,104,Govindaraja Nagar,0.8,26
+105,105,Agrahara Dasarahalli,0.8,28
+106,106,Dr.Raj Kumar Ward,1,30
+107,107,Shiva Nagar,0.8,28
+108,108,Sri Rama Mandir Ward,1.1,33
+109,109,Chickpete,0.7,38
+110,110,Sampangiram Nagar,4.4,58
+111,111,Shantala Nagar,4,61
+112,112,Domlur,1.7,51
+113,113,Konena Agrahara,2.1,47
+114,114,Agaram,11,35
+115,115,Vannar Pet,0.8,30
+116,116,Nilasandra,0.5,30
+117,117,Shanthi Nagar,2.7,43
+118,118,Sudham Nagar,1,30
+119,119,Dharmaraya Swamy Temple,1.1,41
+120,120,Cottonpete,0.8,26
+121,121,Binni Pete,0.8,27
+122,122,Kempapura Agrahara,0.4,16
+123,123,Vijaya Nagar,0.7,27
+124,124,Hosahalli,0.9,33
+125,125,Marenahalli,0.7,23
+126,126,Maruthi Mandir Ward,0.8,26
+127,127,Mudalapalya,1,37
+128,128,Nagarabhavi,1.6,45
+129,129,Jnana Bharathi Ward,11.9,233
+130,130,Ullalu,8.7,235
+131,131,Nayandahalli,2.1,40
+132,132,Attiguppe,1.4,46
+133,133,Hampi Nagar,1.1,38
+134,134,Bapuji Nagar,0.7,23
+135,135,Padarayanapura,0.3,13
+136,136,Jagajivanaram Nagar,0.6,20
+137,137,Rayapuram,0.4,16
+138,138,Chelavadi Palya,0.4,14
+139,139,KR Market,0.8,26
+140,140,Chamraja Pet,1,34
+141,141,Azad Nagar,0.7,26
+142,142,Sunkenahalli,1.5,50
+143,143,Vishveshwara Puram,2.5,52
+144,144,Siddapura,0.7,15
+145,145,Hombegowda Nagar,1.4,36
+146,146,Lakkasandra,1.3,29
+147,147,Adugodi,1.6,31
+148,148,Ejipura,1.9,48
+149,149,Varthur,28.3,202
+150,150,Bellanduru,26.4,249
+151,151,Koramangala,3.7,71
+152,152,Suddagunte Palya,1.7,38
+153,153,Jaya Nagar,2.5,47
+154,154,Basavanagudi,1.2,38
+155,155,Hanumanth Nagar,1,30
+156,156,Sri Nagar,0.8,29
+157,157,Gali Anjenaya Temple Ward,1.1,34
+158,158,Deepanjali Nagar,2.1,50
+159,159,Kengeri,5.1,99
+160,160,Raja Rajeshawari Nagar,11.1,223
+161,161,Hosakerehalli,1.3,46
+162,162,Giri Nagar,1.8,55
+163,163,Katriguppe,1.1,38
+164,164,Vidya Peeta Ward,1.2,42
+165,165,Ganesh Mandir Ward,1.6,45
+166,166,Kari Sandra,1.1,31
+167,167,Yediyur,1.2,41
+168,168,Pattabhi Ram Nagar,1.7,43
+169,169,Byra Sandra,0.9,26
+170,170,Jaya Nagar East,1,29
+171,171,Gurappana Palya,0.7,24
+172,172,Madivala,1.2,41
+173,173,Jakka Sandra,1.5,34
+174,174,HSR Layout,7.1,141
+175,175,Bommanahalli,1.8,49
+176,176,BTM Layout,2.1,64
+177,177,JP Nagar,1.8,48
+178,178,Sarakki,1.3,39
+179,179,Shakambari Narar,1.9,41
+180,180,Banashankari Temple Ward,0.7,28
+181,181,Kumara Swamy Layout,1.8,60
+182,182,Padmanabha Nagar,1.7,53
+183,183,Chikkala Sandra,1.1,39
+184,184,Uttarahalli,9.9,215
+185,185,Yelchenahalli,1.6,51
+186,186,Jaraganahalli,1.3,37
+187,187,Puttenahalli,2.9,65
+188,188,Bilekhalli,4.3,72
+189,189,Honga Sandra,2.1,61
+190,190,Mangammana Palya,3.5,83
+191,191,Singa Sandra,9.7,179
+192,192,Begur,19,280
+193,193,Arakere,6.6,155
+194,194,Gottigere,7.4,176
+195,195,Konankunte,3.4,94
+196,196,Anjanapura,11.4,234
+197,197,Vasanthpura,5.7,143
+198,198,Hemmigepura,30.5,453
+199,Total,"",709.49,"13,483"
